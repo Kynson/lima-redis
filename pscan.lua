@@ -1,3 +1,5 @@
+#!lua name=pscan
+
 local function pscan(_keys, args)
   local pattern = args[1];
   local cursor = args[2];
