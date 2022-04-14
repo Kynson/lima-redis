@@ -20,9 +20,9 @@ function insertNewline() {
 }
 
 function promptWithDefault() {
-	# The respond is a global variable
-	read -p "$1" respond
-	respond="${respond:-$2}"
+	# The response is a global variable
+	read -p "$1" response
+	response="${response:-$2}"
 }
 
 echo "Adding copyright notice and LICENSE"
@@ -72,8 +72,8 @@ cat "$temporaryDirectory/Dockerfile" >> "$temporaryContainerfile"
 
 promptWithDefault "Do you want to preview the current generated Containerfile before customization? [Y/n]: " "y"
 
-# promptWithDefault will update the global variable respond
-if [[ $respond = 'y' ]] || [[ $respond = 'Y' ]]; then
+# promptWithDefault will update the global variable response
+if [[ $response = 'y' ]] || [[ $response = 'Y' ]]; then
 	less -N "$temporaryContainerfile"
 fi
 
@@ -84,7 +84,7 @@ if [[ $baseImageVersion != 'latest' ]]; then
 	echo "$fromCommand => FROM alpine:latest"
 	promptWithDefault "Confirm update the FROM command as above? [Y/n]: " "y"
 
-	if [[ $respond = 'y' ]] || [[ $respond = 'Y' ]]; then
+	if [[ $response = 'y' ]] || [[ $response = 'Y' ]]; then
 		ed -s <<- EOF "$temporaryContainerfile"
 			,s/$fromCommand/FROM alpine:latest/
 			w
@@ -101,7 +101,7 @@ protectedModeCommandsEnd="$(($protectedModeCommandsStart + 9))"
 setupCommandsStart="$(grep -n "RUN mkdir /data" "$temporaryContainerfile" | awk -F ':' '{ print $1 }')"
 
 promptWithDefault "Confirm remove lines relate to protected mode ($protectedModeCommandsStart - $protectedModeCommandsEnd)? [Y/n]: " "y"
-if [[ $respond = 'y' ]] || [[ $respond = 'Y' ]]; then
+if [[ $response = 'y' ]] || [[ $response = 'Y' ]]; then
 	ed -s <<- EOF "$temporaryContainerfile"
 		$protectedModeCommandsStart,${protectedModeCommandsEnd}d
 		w
@@ -114,7 +114,7 @@ promptWithDefault "Confirm remove other setup commands ($setupCommandsStart - en
 # Update the line number
 setupCommandsStart="$(grep -n "RUN mkdir /data" "$temporaryContainerfile" | awk -F ':' '{ print $1 }')"
 
-if [[ $respond = 'y' ]] || [[ $respond = 'Y' ]]; then
+if [[ $response = 'y' ]] || [[ $response = 'Y' ]]; then
 	ed -s <<- EOF "$temporaryContainerfile"
 		$setupCommandsStart,\$d
 		w
@@ -123,17 +123,17 @@ if [[ $respond = 'y' ]] || [[ $respond = 'Y' ]]; then
 fi
 
 promptWithDefault "Do you want to view the diff of the generated file against the original? [y/N]: " "n"
-if [[ $respond = 'y' ]] || [[ $respond = 'Y' ]]; then
+if [[ $response = 'y' ]] || [[ $response = 'Y' ]]; then
 	diff -c "$temporaryContainerfile" "$baseDockerfile"
 fi
 
 promptWithDefault "Do you want to preview the generated file? [Y/n]: " "y"
-if [[ $respond = 'y' ]] || [[ $respond = 'Y' ]]; then
+if [[ $response = 'y' ]] || [[ $response = 'Y' ]]; then
 	less -N "$temporaryContainerfile"
 fi
 
 promptWithDefault "Confirm writing the file to $outfileName ? [Y/n]: " "y"
-if [[ $respond = 'y' ]] || [[ $respond = 'Y' ]]; then
+if [[ $response = 'y' ]] || [[ $response = 'Y' ]]; then
 		cp "$temporaryContainerfile" "$outfileName"
 	else
 		echo "Aborted"

@@ -23,9 +23,9 @@ echo "Redis Version: $oldRedisVersion => $redisVersion"
 echo "Redis Download URL: $oldRedisDownloadUrl => $redisDownloadUrl"
 echo "Redis Download SHA: $oldRedisDownloadSha => $redisDownloadSha"
 
-read -p "Confirm the above update? [Y/n]: " respond
-respond="${respond:-Y}"
-if [[ $respond = 'y' ]] || [[ $respond = 'Y' ]]; then
+read -p "Confirm the above update? [Y/n]: " response
+response="${response:-Y}"
+if [[ $response = 'y' ]] || [[ $response = 'Y' ]]; then
 	ed -s <<- EOF "$containerfilePath"
     ,s/ENV REDIS_VERSION $oldRedisVersion/ENV REDIS_VERSION $redisVersion/
     w
