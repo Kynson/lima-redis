@@ -18,17 +18,17 @@ function stopRedisAndExit() {
 # Turn on job control
 set -m
 # $INIT_PASSWORD will be substitute during build. Refer to scripts/build.sh in this repo
-export REDISCLI_AUTH="$INIT_PASSWORD"
+export REDISCLI_AUTH="$_INIT_PASSWORD"
 
 log "Starting Redis"
 # Put redis-server to background for the meantime
-redis-server /etc/redis/redis.conf &
+su-exec redis:redis redis-server /etc/redis/redis.conf &
 
 log "Sleeping for 5 seconds to wait for Redis to fully initialize"
 sleep 5
 
 log "Checking if PSCAN function loaded"
-response="$(redis-cli --user init FUNCTION LIST LIBRARYNAME pscan)" || stopRedisAndExit
+response="$(redis-cli --user $_INIT_USER FUNCTION LIST LIBRARYNAME pscan)" || stopRedisAndExit
 
 if [[ "$response" = "" ]]; then
     log "Loading PSCAN function"
