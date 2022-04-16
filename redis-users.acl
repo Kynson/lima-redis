@@ -1,0 +1,3 @@
+user default off
+user $_APP_USER on +set +get +del +scan +fcall ~* #$_APP_PASSWORD_HASH
+user $_INIT_USER on +function|list +function|load ~* #$_INIT_PASSWORD_HASH
