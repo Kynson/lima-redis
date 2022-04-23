@@ -10,7 +10,7 @@ targetFiles=("redis-init.sh" "redis-users.acl")
 # $3 is the replacement string
 function replace() {
   ed -s <<- EOF "$1"
-    ,s/$2/$3/g
+    ,s;$2;$3;g
     w
     q
 	EOF
