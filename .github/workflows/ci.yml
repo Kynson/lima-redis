@@ -10,11 +10,11 @@ on:
 name: Lima Redis CI
 
 env:
-  __S_APP_USER: ${{ secrets.__S_APP_USER }}
-  __S_APP_PASSWORD_HASH: ${{ secrets.__S_APP_PASSWORD_HASH }}
-  __S_INIT_USER: ${{ secrets.__S_INIT_USER }}
-  __S_INIT_PASSWORD: ${{ secrets.__S_INIT_PASSWORD }}
-  __S_INIT_PASSWORD_HASH: ${{ secrets.__S_INIT_PASSWORD_HASH }}
+  __S_APP_USER__: ${{ secrets.__S_APP_USER__ }}
+  __S_APP_PASSWORD_HASH__: ${{ secrets.__S_APP_PASSWORD_HASH__ }}
+  __S_INIT_USER__: ${{ secrets.__S_INIT_USER__ }}
+  __S_INIT_PASSWORD__: ${{ secrets.__S_INIT_PASSWORD__ }}
+  __S_INIT_PASSWORD_HASH__: ${{ secrets.__S_INIT_PASSWORD_HASH__ }}
   IMAGE_NAME: lima-redis
   IMAGE_TAGS: latest ${{ github.ref_name }}
 
@@ -25,7 +25,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
       - name: Build Source
-        run: ./scripts/build.sh
+        run: bash ./scripts/build.sh
       - name: Build image
         uses: redhat-actions/buildah-build@main
         with:
@@ -34,7 +34,7 @@ jobs:
           containerfiles: |
             ./Containerfile
       - name: Test Redis
-        run: ./scripts/test.sh 
+        run: bash ./scripts/test.sh 
   release:
     runs-on: ubuntu-latest
     needs: test
@@ -46,7 +46,7 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y qemu-user-static
       - name: Build Source
-        run: ./scripts/build.sh
+        run: bash ./scripts/build.sh
       - name: Build images
         uses: redhat-actions/buildah-build@main
         with:
