@@ -1,0 +1,78 @@
+on:
+  push:
+    paths-ignore:
+      - tools/**
+      - LICENSE
+      - README.md
+    tags:
+      - v*.*.*
+
+name: Lima Redis CI
+
+env:
+  __S_APP_USER: ${{ secrets.__S_APP_USER }}
+  __S_APP_PASSWORD_HASH: ${{ secrets.__S_APP_PASSWORD_HASH }}
+  __S_INIT_USER: ${{ secrets.__S_INIT_USER }}
+  __S_INIT_PASSWORD: ${{ secrets.__S_INIT_PASSWORD }}
+  __S_INIT_PASSWORD_HASH: ${{ secrets.__S_INIT_PASSWORD_HASH }}
+  IMAGE_NAME: lima-redis
+  IMAGE_TAGS: latest ${{ github.ref_name }}
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Build Source
+        run: ./scripts/build.sh
+      - name: Build image
+        uses: redhat-actions/buildah-build@main
+        with:
+          image: ${{ env.IMAGE_NAME }}
+          tags: latest
+          containerfiles: |
+            ./Containerfile
+      - name: Test Redis
+        run: ./scripts/test.sh 
+  release:
+    runs-on: ubuntu-latest
+    needs: test
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Install QEMU for building multiarch images
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y qemu-user-static
+      - name: Build Source
+        run: ./scripts/build.sh
+      - name: Build images
+        uses: redhat-actions/buildah-build@main
+        with:
+          image: ${{ env.IMAGE_NAME }}
+          tags: ${{ env.IMAGE_TAGS }}
+          archs: amd64, arm64
+          containerfiles: |
+            ./Containerfile
+      - name: Convert Repositories Owner to Lower Case
+        id: lowercase-repo-owner
+        uses: actions/github-script@v6
+        with:
+          result-encoding: string
+          script: return context.repo.owner.toLowerCase()
+      - name: Push Images to GitHub Container Registry
+        uses: redhat-actions/push-to-registry@v2
+        with:
+          image: ${{ env.IMAGE_NAME }}
+          tags: ${{ env.IMAGE_TAGS }}
+          registry: ghcr.io/${{ steps.lowercase-repo-owner.outputs.result }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      - name: Add New Release to GitHub
+        uses: softprops/action-gh-release@v1
+        with:
+          tag_name: ${{ github.ref_name }}
+          body: |
+            ${{ github.ref_name }} is released.
+            Please refer to the [CHANGELOG](CHANGELOG.md) for details.
