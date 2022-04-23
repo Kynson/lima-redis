@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# This script build this project by replacing secret variables (with __S_ prefix)
+# This script build this project by replacing secret variables (with __S_ prefix and ends with __)
 # with their values stored on GitHub
 
 targetFiles=("redis-init.sh" "redis-users.acl")
@@ -24,12 +24,12 @@ done < <(grep '__S_*' <(env))
 
 for file in "${targetFiles[@]}"; do
   for secret in "${secretVariables[@]}"; do
-    echo "Replacing $secret in $file"
-
     secretName="$(cut -d '=' -f 1 <<< "$secret")"
     value="$(cut -d '=' -f 2 <<< "$secret")"
 
     if grep "$secretName" "$file" > /dev/null; then
+      echo "Replacing $secretName in $file"
+
       replace "$file" "$secretName" "$value"
     fi
   done
