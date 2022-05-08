@@ -9,6 +9,7 @@
 
 function log() {
   echo "$(date): $1" >> "/var/log/redis-init.log"
+  echo "[redis-init] $(date): $1"
 }
 
 function stopRedisAndExit() {
