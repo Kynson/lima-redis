@@ -1,3 +1,7 @@
+# v2.0.1 (20-07-2022)
+**Fix:**
+- Update [test.sh](scripts/test.sh), use the correct secret name.
+
 # v2.0.0 (20-07-2022)
 **Breaking Changes:**  
   
@@ -13,5 +17,6 @@ The built image no longer contains the required secrets. Both `redis-init-secret
 # v1.0.1 (23-04-2022)
 **Fix:**
 - Update [build.sh](scripts/build.sh), use a semicolon as separator instead of a slash in ed. This allows secret variables with slash to be replaced correctly.
+
 # v1.0.0 (23-04-2022)
 This is the initial release
