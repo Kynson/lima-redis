@@ -10,11 +10,6 @@ on:
 name: Lima Redis CI
 
 env:
-  __S_APP_USER__: ${{ secrets.__S_APP_USER__ }}
-  __S_APP_PASSWORD_HASH__: ${{ secrets.__S_APP_PASSWORD_HASH__ }}
-  __S_INIT_USER__: ${{ secrets.__S_INIT_USER__ }}
-  __S_INIT_PASSWORD__: ${{ secrets.__S_INIT_PASSWORD__ }}
-  __S_INIT_PASSWORD_HASH__: ${{ secrets.__S_INIT_PASSWORD_HASH__ }}
   IMAGE_NAME: lima-redis
   IMAGE_TAGS: latest ${{ github.ref_name }}
 
@@ -24,13 +19,13 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v3
-      - name: Build Source
-        run: bash ./scripts/build.sh
       - name: Build image
         uses: redhat-actions/buildah-build@main
         with:
           image: ${{ env.IMAGE_NAME }}
           tags: latest
+          extra-args: |
+            --secret=id=redis-users.acl,src=./redis-users.acl
           containerfiles: |
             ./Containerfile
       - name: Test Redis
@@ -45,13 +40,13 @@ jobs:
         run: |
           sudo apt-get update
           sudo apt-get install -y qemu-user-static
-      - name: Build Source
-        run: bash ./scripts/build.sh
       - name: Build images
         uses: redhat-actions/buildah-build@main
         with:
           image: ${{ env.IMAGE_NAME }}
           tags: ${{ env.IMAGE_TAGS }}
+          extra-args: |
+            --secret=id=redis-users.acl,src=./redis-users.acl
           archs: amd64, arm64
           containerfiles: |
             ./Containerfile

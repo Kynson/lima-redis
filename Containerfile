@@ -141,7 +141,8 @@ COPY redis-init.sh $ROOT_DIR/scripts/redis-init.sh
 RUN chmod +x $ROOT_DIR/scripts/redis-init.sh
 
 COPY redis.conf /etc/redis/redis.conf
-COPY redis-users.acl /etc/redis/redis-users.acl
+# Mount the fake ACL file for build
+RUN --mount=type=secret,id=redis-users.acl ln -s /run/secrets/redis-users.acl /etc/redis/redis-users.acl
 
 RUN touch /var/log/redis_6379.log && chown redis:redis /var/log/redis_6379.log
 
