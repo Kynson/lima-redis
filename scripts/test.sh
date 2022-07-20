@@ -1,8 +1,12 @@
 #!/bin/bash
 
+echo "Creating secrets"
+podman secret create redis-users.acl ./redis-users.acl
+podman secret create redis-init-secrets ./redis-init-secrets.txt
+
 echo "Running image for test"
 # Use these two command as podman run does not work well with &
-podman create -it --rm --name lima-redis-test lima-redis
+podman create -it --rm --name lima-redis-test --secret=redis-users.acl --secret=redis-init-secrets lima-redis
 podman start lima-redis-test &
 
 echo "Sleeping for 8 seconds to wait for Redis to start"
