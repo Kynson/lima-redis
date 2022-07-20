@@ -1,3 +1,3 @@
 user default off
-user __S_APP_USER__ on +set +get +del +scan +fcall +@transaction -watch -unwatch ~* #__S_APP_PASSWORD_HASH__
-user __S_INIT_USER__ on +function|list +function|load ~* #__S_INIT_PASSWORD_HASH__
+user __S_APP_USER__ on +set +get +del +scan +fcall +@transaction -watch -unwatch ~* #3456d53154fa4098a09b1195833668cabf29596665bfd1e6880ead1511712234
+user __S_INIT_USER__ on +function|list +function|load ~* #3456d53154fa4098a09b1195833668cabf29596665bfd1e6880ead1511712234
