@@ -19,6 +19,9 @@ function stopRedisAndExit() {
 # Turn on job control
 set -m
 
+# Set the dimeter as space
+IFS=' '
+
 # The secrets are mounted when the container is started with podman-compose
 log "Loading secrets"
 secrets="$(cat /run/secrets/redis-init-secrets.txt)"
@@ -50,7 +53,7 @@ if [[ "$response" = "" ]]; then
 fi
 
 log "Cleaning up secrets"
-for secretName in "$secretNames"; do
+for secretName in $secretNames; do
   unset "$secretName"
 done
 
