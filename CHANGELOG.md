@@ -1,3 +1,7 @@
+# v3.0.0 (21-07-2022)
+**Breaking Changes:**  
+- Update Redis to version 7.0.4
+
 # v2.0.2 (21-07-2022)
 **Fix:**
 - Update [init.sh](redis-init.sh), add use space as a dimeter. This fix bad variable name error during initialization.
