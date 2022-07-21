@@ -50,9 +50,9 @@ RUN apk add --no-cache \
 # add tzdata for https://github.com/docker-library/redis/issues/138
 		tzdata
 
-ENV REDIS_VERSION 7.0-rc3
-ENV REDIS_DOWNLOAD_URL https://github.com/redis/redis/archive/7.0-rc3.tar.gz
-ENV REDIS_DOWNLOAD_SHA a3775c84e2c57d78b8dbef539db4340f69d9af35ebfea7bba5ca528509338975
+ENV REDIS_VERSION 7.0.4
+ENV REDIS_DOWNLOAD_URL https://download.redis.io/releases/redis-7.0.4.tar.gz
+ENV REDIS_DOWNLOAD_SHA f0e65fda74c44a3dd4fa9d512d4d4d833dd0939c934e946a5c622a630d057f2f
 
 # Set the correct time zone
 ENV TZ Asia/Hong_Kong
