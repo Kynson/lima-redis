@@ -25,5 +25,7 @@ if [[ $testExitCode == 0 ]]; then
     echo "Test passed: Connection to Redis was successful"
 else
     echo "Test failed: Cannot connect to Redis"
+    echo "Redis Init Log:"
+    podman logs lima-redis-test
     exit 1
 fi
