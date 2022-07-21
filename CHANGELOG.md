@@ -1,3 +1,9 @@
+# v2.0.2 (21-07-2022)
+**Fix:**
+- Update [init.sh](redis-init.sh), add use space as a dimeter. This fix bad variable name error during initialization.
+- Update [redis-init-secrets.txt](redis-init-secrets.txt) due to above change.
+- Update [test.sh](scripts/test.sh), output logs after failed test to facilitate debugging.
+
 # v2.0.1 (20-07-2022)
 **Fix:**
 - Update [test.sh](scripts/test.sh), use the correct secret name.
@@ -9,7 +15,7 @@ The built image no longer contains the required secrets. Both `redis-init-secret
 - Update [ci.yml](.github/workflows/ci.yml), CI no longer use `build.sh` to include secrets in the image.
 - Update [Containerfile](Containerfile), a symbolic link of `/run/secrets/redis-users.acl` will be created during build, instead of including the actual ACL file.
 - Update [redis-init.sh](redis-init.sh), init script now loads the provided secrets from `/run/secrets/redis-init-secrets.txt`.
-- Update [test.sh](scripts/test.sh) to due to above changes. 
+- Update [test.sh](scripts/test.sh) due to above changes. 
 
 **Other Changes:**
 - Update [redis-init.sh](redis-init.sh) and [redis.conf](redis.conf) to improve logging.
