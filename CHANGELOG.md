@@ -1,10 +1,17 @@
+# v3.1.0
+**Update:**
+- Update Redis to version 7.0.5
+
+**Other Changes:**
+- Correct typo in CHANGELOG
+
 # v3.0.0 (21-07-2022)
 **Breaking Changes:**  
 - Update Redis to version 7.0.4
 
 # v2.0.2 (21-07-2022)
 **Fix:**
-- Update [init.sh](redis-init.sh), add use space as a dimeter. This fix bad variable name error during initialization.
+- Update [init.sh](redis-init.sh), use space as a dimeter. This fix bad variable name error during initialization.
 - Update [redis-init-secrets.txt](redis-init-secrets.txt) due to above change.
 - Update [test.sh](scripts/test.sh), output logs after failed test to facilitate debugging.
 
