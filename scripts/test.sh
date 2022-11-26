@@ -9,8 +9,8 @@ echo "Running image for test"
 podman create -it --rm --name lima-redis-test --secret=redis-users.acl --secret=redis-init-secrets.txt lima-redis
 podman start lima-redis-test &
 
-echo "Sleeping for 8 seconds to wait for Redis to start"
-sleep 8
+echo "Sleeping for 5 seconds to wait for Redis to start"
+sleep 5
 
 echo "Testing if Redis is running"
 # We do not authenticate here as we just want to test if Redis is started and running
